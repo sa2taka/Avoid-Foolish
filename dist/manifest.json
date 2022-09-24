@@ -1,0 +1,10 @@
+{
+  "name": "Avoid Foolish",
+  "description": "Hide HTML DOM content using your customizing CSS selector.",
+  "version": "1.0",
+  "manifest_version": 3,
+
+  "background": {
+    "scripts": ["js/background.js"]
+  }
+}
