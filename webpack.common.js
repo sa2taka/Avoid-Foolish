@@ -3,6 +3,7 @@ const path = require("path");
 module.exports = {
   entry: {
     background: path.join(__dirname, "src/background.ts"),
+    "hide-target": path.join(__dirname, "src/hide-target.ts"),
   },
   output: {
     path: path.join(__dirname, "dist/js"),

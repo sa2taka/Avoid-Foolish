@@ -1,9 +1,4 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    let isResponseAsync = false;
-
-    if (request.popupMounted) {
-        console.log('eventPage notified that Popup.tsx has mounted.');
-    }
-
-    return isResponseAsync;
-});
+// @ts-ignore because registerContentScripts is not in @types/chrome
+chrome.scripting.registerContentScripts([
+  { id: "1", matches: ["*://console.cloud.google.com/cloudtasks/queue/*"], js: ["js/hide-target.js"], css: ["css/hide-target.css"] },
+]);
