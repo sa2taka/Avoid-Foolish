@@ -1,9 +1,4 @@
-type Config = {
-  url: string;
-  targetCssSelector: string;
-  repeat?: boolean;
-  disable?: boolean;
-};
+import { Config } from "./hide-target-config";
 
 const HIDE_TARGET_CLASS_NAME = "avoid-foolish__hide-target";
 

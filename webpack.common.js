@@ -4,6 +4,7 @@ module.exports = {
   entry: {
     background: path.join(__dirname, "src/background.ts"),
     "hide-target": path.join(__dirname, "src/hide-target.ts"),
+    options: path.join(__dirname, "src/options/index.tsx"),
   },
   output: {
     path: path.join(__dirname, "dist/js"),
@@ -20,7 +21,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "../src"),
+      "@": path.resolve(__dirname, "src"),
     },
     extensions: [".ts", ".tsx", ".js"],
   },

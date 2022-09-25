@@ -7,10 +7,12 @@
     "moduleResolution": "node",
     "outDir": "dist/js",
     "rootDir": "src",
+    "baseUrl": "./",
     "sourceMap": true,
     "target": "ES2020",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["src/*"]
+    },
+    "esModuleInterop": true
   }
 }
