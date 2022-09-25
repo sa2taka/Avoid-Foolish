@@ -2,6 +2,8 @@ import { Loadable } from "@/helpers/loadable";
 import { Config, ConfigKey } from "@/hide-target-config";
 import React, { Suspense, useCallback, useState } from "react";
 import { uniqBy } from "lodash-es";
+import { ThemeProvider } from "./ThemeProvider";
+import { Box, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 
 const fetchConfigList = async (): Promise<Config[]> => {
   const data = await chrome.storage.sync.get();
@@ -14,10 +16,10 @@ const saveConfigList = async (newConfig: Config[]) => {
 
 const ConfigRow: React.FC<{ config: Config }> = ({ config }) => {
   return (
-    <tr>
-      <td>{config.url}</td>
-      <td>{config.targetCssSelector}</td>
-    </tr>
+    <TableRow>
+      <TableCell>{config.url}</TableCell>
+      <TableCell>{config.targetCssSelector}</TableCell>
+    </TableRow>
   );
 };
 
@@ -25,17 +27,19 @@ const ConfigList: React.FC<{ configLoader: Loadable<Config[]> }> = ({ configLoad
   const configList = configLoader.getOrThrow();
 
   return (
-    <table>
-      <thead>
-        <th>URL</th>
-        <th>target css selector</th>
-      </thead>
+    <Table size="small">
+      <TableHead>
+        <TableRow>
+          <TableCell component="th">URL</TableCell>
+          <TableCell component="th">target css selector</TableCell>
+        </TableRow>
+      </TableHead>
       <tbody>
         {configList.map((config) => (
-          <ConfigRow config={config} />
+          <ConfigRow config={config} key={`${config.url}--${config.targetCssSelector}`} />
         ))}
       </tbody>
-    </table>
+    </Table>
   );
 };
 
@@ -61,11 +65,31 @@ const ConfigForm: React.FC<{ saveConfig: (config: Config) => Promise<void> }> = 
   }, [newUrl, newTargetCssSelector]);
 
   return (
-    <form onSubmit={onSubmit}>
-      <input name="url" value={newUrl} onChange={onChangeNewUrl} />
-      <input name="targetCssSelector" value={newTargetCssSelector} onChange={onChangeNewTargetCssSelector} />
-      <button type="submit">save</button>
-    </form>
+    <Box component="form" display="flex" onSubmit={onSubmit} width="100%" mt="2" alignItems="center">
+      <TextField
+        variant="standard"
+        id="url"
+        name="url"
+        label="URL (Partial Match, not RegExp)"
+        placeholder="gojogle.com/search"
+        onChange={onChangeNewUrl}
+        value={newUrl}
+        sx={{ marginX: "0.5em", width: "100%" }}
+      />
+      <TextField
+        variant="standard"
+        id="targetCssSelector"
+        name="targetCssSelector"
+        label="Target, specify with CSS selector"
+        placeholder="button#search"
+        onChange={onChangeNewTargetCssSelector}
+        value={newTargetCssSelector}
+        sx={{ marginX: "0.5em", width: "100%" }}
+      />
+      <Box mx={1}>
+        <Button>Add</Button>
+      </Box>
+    </Box>
   );
 };
 
@@ -80,11 +104,13 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <Suspense fallback={"loading"}>
-        <ConfigList configLoader={configLoader} />
-      </Suspense>
-      <ConfigForm saveConfig={saveConfig} />
-    </div>
+    <ThemeProvider>
+      <div style={{ width: "100%", position: "relative" }}>
+        <Suspense fallback={"loading"}>
+          <ConfigList configLoader={configLoader} />
+        </Suspense>
+        <ConfigForm saveConfig={saveConfig} />
+      </div>
+    </ThemeProvider>
   );
 };

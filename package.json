@@ -3,11 +3,14 @@
   "description": "Hide HTML DOM content using your customizing CSS selector.",
   "packageManager": "yarn@3.2.3",
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.6",
     "@types/lodash-es": "^4.17.6",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rebass": "^4.0.7"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.197",
