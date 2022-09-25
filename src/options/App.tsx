@@ -199,7 +199,7 @@ const ConfigForm: React.FC<{ addConfig: (config: Config) => void }> = ({ addConf
         variant="standard"
         id="url"
         name="url"
-        label="URL (Partial Match, not RegExp)"
+        label="URL, exact match domain and partial match path"
         placeholder="google.com/search"
         onChange={onChangeNewUrl}
         value={newUrl}
