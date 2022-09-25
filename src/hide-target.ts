@@ -4,6 +4,7 @@ const HIDE_TARGET_CLASS_NAME = "avoid-foolish__hide-target";
 
 const configs: Config[] = [
   {
+    id: "hogehoge",
     url: "console.cloud.google.com/cloudtasks/queue",
     targetCssSelector: "button[cfciamcheck='cloudtasks.queues.delete']",
   },

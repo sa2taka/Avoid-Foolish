@@ -1,4 +1,5 @@
 export type Config = {
+  id: string;
   url: string;
   targetCssSelector: string;
   repeat?: boolean;
