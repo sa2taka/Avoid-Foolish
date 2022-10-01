@@ -32,6 +32,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "dev": "webpack -w --config webpack.dev.js"
+    "dev": "webpack -w --config webpack.dev.js",
+    "deploy:compress": "bash -c \"(cd dist && zip ../dist.zip *)\""
   }
 }
