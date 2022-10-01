@@ -1,7 +1,7 @@
 {
   "name": "Avoid Foolish",
   "description": "Hide HTML DOM content using your customizing CSS selector.",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 3,
 
   "icons": {
