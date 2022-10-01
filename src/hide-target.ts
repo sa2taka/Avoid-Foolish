@@ -31,11 +31,10 @@ const hideTarget = (configList: Config[]): boolean => {
 
 window.addEventListener("load", () => {
   chrome.storage.sync.get().then((configData) => {
-    const configList: Config[] = configData[ConfigKey];
-    console.log(configList);
+    const configList: Config[] = Array.isArray(configData[ConfigKey]) ? configData[ConfigKey] : [];
 
     const currentConfig = configList.filter(({ url, disable }) => location.href.match(url) && !disable);
-    console.log(currentConfig);
+
     if (currentConfig.length === 0) {
       return;
     }

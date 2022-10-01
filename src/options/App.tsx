@@ -10,7 +10,7 @@ import { useDebounce } from "@/helpers/use-debounce";
 
 const fetchConfigList = async (): Promise<Config[]> => {
   const data = await chrome.storage.sync.get();
-  return data[ConfigKey];
+  return Array.isArray(data[ConfigKey]) ? data[ConfigKey] : [];
 };
 
 const saveConfigList = async (newConfig: Config[]) => {

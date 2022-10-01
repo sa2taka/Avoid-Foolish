@@ -1,7 +1,7 @@
 import { Config, ConfigKey } from "./hide-target-config";
 
 chrome.storage.sync.get().then((configData) => {
-  const configList: Config[] = configData[ConfigKey];
+  const configList: Config[] = Array.isArray(configData[ConfigKey]) ? configData[ConfigKey] : [];
 
   const urls = configList.map((config) => `*://${config.url}*`);
 
