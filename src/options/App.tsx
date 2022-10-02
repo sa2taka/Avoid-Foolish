@@ -7,11 +7,7 @@ import { Box, Button, TextField, Table, TableBody, Checkbox, TableCell, TableHea
 import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuid } from "uuid";
 import { useDebounce } from "@/helpers/use-debounce";
-import { fetchConfigList } from "@/helpers/fetch-config-list";
-
-const saveConfigList = async (newConfig: Config[]) => {
-  return chrome.storage.sync.set({ [ConfigKey]: newConfig });
-};
+import { fetchConfigList, saveConfigList } from "@/helpers/config-list-operation";
 
 const validateCssSelector = ((dummyElement: DocumentFragment) => (selector: string) => {
   try {

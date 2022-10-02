@@ -5,3 +5,7 @@ export const fetchConfigList = (): Promise<Config[]> => {
     return Array.isArray(configData[ConfigKey]) ? configData[ConfigKey] : [];
   });
 };
+
+export const saveConfigList = async (newConfig: Config[]) => {
+  return chrome.storage.sync.set({ [ConfigKey]: newConfig });
+};
