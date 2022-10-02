@@ -1,8 +1,6 @@
-import { Config, ConfigKey } from "./hide-target-config";
+import { fetchConfigList } from "./helpers/fetch-config-list";
 
-chrome.storage.sync.get().then((configData) => {
-  const configList: Config[] = Array.isArray(configData[ConfigKey]) ? configData[ConfigKey] : [];
-
+fetchConfigList().then((configList) => {
   const urls = configList.map((config) => `*://${config.url}*`);
 
   // @ts-ignore because registerContentScripts is not in @types/chrome

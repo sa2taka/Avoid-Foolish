@@ -1,3 +1,4 @@
+import { fetchConfigList } from "./helpers/fetch-config-list";
 import { Config, ConfigKey } from "./hide-target-config";
 
 const HIDE_TARGET_CLASS_NAME = "avoid-foolish__hide-target";
@@ -30,9 +31,7 @@ const hideTarget = (configList: Config[]): boolean => {
 };
 
 window.addEventListener("load", () => {
-  chrome.storage.sync.get().then((configData) => {
-    const configList: Config[] = Array.isArray(configData[ConfigKey]) ? configData[ConfigKey] : [];
-
+  fetchConfigList().then((configList) => {
     const currentConfig = configList.filter(({ url, disable }) => location.href.match(url) && !disable);
 
     if (currentConfig.length === 0) {

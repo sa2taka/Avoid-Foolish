@@ -7,11 +7,7 @@ import { Box, Button, TextField, Table, TableBody, Checkbox, TableCell, TableHea
 import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuid } from "uuid";
 import { useDebounce } from "@/helpers/use-debounce";
-
-const fetchConfigList = async (): Promise<Config[]> => {
-  const data = await chrome.storage.sync.get();
-  return Array.isArray(data[ConfigKey]) ? data[ConfigKey] : [];
-};
+import { fetchConfigList } from "@/helpers/fetch-config-list";
 
 const saveConfigList = async (newConfig: Config[]) => {
   return chrome.storage.sync.set({ [ConfigKey]: newConfig });
