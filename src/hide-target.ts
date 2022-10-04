@@ -1,4 +1,4 @@
-import { fetchConfigList } from "./helpers/fetch-config-list";
+import { fetchConfigList } from "./helpers/config-list-operation";
 import { Config, ConfigKey } from "./hide-target-config";
 
 const HIDE_TARGET_CLASS_NAME = "avoid-foolish__hide-target";
@@ -33,7 +33,7 @@ const hideTarget = (configList: Config[]): boolean => {
 window.addEventListener("load", () => {
   fetchConfigList().then((configList) => {
     const currentConfig = configList.filter(({ url, disable }) => location.href.match(url) && !disable);
-
+    console.log(configList);
     if (currentConfig.length === 0) {
       return;
     }

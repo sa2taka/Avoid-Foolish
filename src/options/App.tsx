@@ -1,45 +1,18 @@
 import { Loadable } from "@/helpers/loadable";
-import { Config, ConfigKey } from "@/hide-target-config";
+import { Config } from "@/hide-target-config";
 import React, { FormEvent, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { uniqBy } from "lodash-es";
-import { ThemeProvider } from "./ThemeProvider";
+import { ThemeProvider } from "@/helpers/ThemeProvider";
 import { Box, Button, TextField, Table, TableBody, Checkbox, TableCell, TableHead, TableRow, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuid } from "uuid";
 import { useDebounce } from "@/helpers/use-debounce";
 import { fetchConfigList, saveConfigList } from "@/helpers/config-list-operation";
+import { validateConfig, isValidConfig } from "@/helpers/validate-config";
 
-const validateCssSelector = ((dummyElement: DocumentFragment) => (selector: string) => {
-  try {
-    dummyElement.querySelector(selector);
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-  return true;
-})(document.createDocumentFragment());
-
-const validateConfig = (config: Config): { [T in keyof Config]?: string | null } => {
-  const error: { [T in keyof Config]?: string | null } = {};
-
-  if (config.url === "") {
-    error.url = "url is required.";
-  } else {
-    error.url = null;
-  }
-  if (config.targetCssSelector === "") {
-    error.targetCssSelector = "target css selector required.";
-  } else if (!validateCssSelector(config.targetCssSelector)) {
-    error.targetCssSelector = "target css selector is invalid.";
-  } else {
-    error.targetCssSelector = null;
-  }
-
-  return error;
-};
-
-const isValidConfig = (config: Config): boolean => {
-  return Object.values(validateConfig(config)).every((value) => !Boolean(value));
+const normalizeUrl = (url: string): string => {
+  const schemaRemoved = url.replace(/https?:\/\//, "");
+  return schemaRemoved.includes("/") ? schemaRemoved : `${schemaRemoved}/`;
 };
 
 const ConfigRow: React.FC<{
@@ -166,7 +139,7 @@ const ConfigForm: React.FC<{ addConfig: (config: Config) => void }> = ({ addConf
       const newConfig: Config = {
         id: uuid(),
         url: newUrl,
-        targetCssSelector: newTargetCssSelector,
+        targetCssSelector: normalizeUrl(newTargetCssSelector),
       };
       const error = validateConfig(newConfig);
       setUrlError(error.url ?? null);
@@ -221,7 +194,6 @@ const ConfigForm: React.FC<{ addConfig: (config: Config) => void }> = ({ addConf
 };
 
 export const ConfigArea: React.FC<{ configListLoader: Loadable<Config[]> }> = ({ configListLoader }) => {
-  const [isFirst, setIsFirst] = useState(true);
   const [configList, setConfigList] = useState(configListLoader.getOrThrow());
 
   const addConfig = useCallback(
@@ -234,11 +206,6 @@ export const ConfigArea: React.FC<{ configListLoader: Loadable<Config[]> }> = ({
 
   const debounceSaveConfigList = useDebounce(saveConfigList, 300);
   useEffect(() => {
-    if (isFirst) {
-      setIsFirst(false);
-      return;
-    }
-
     if (!configList.every(isValidConfig)) {
       return;
     }
