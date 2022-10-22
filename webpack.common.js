@@ -5,6 +5,7 @@ module.exports = {
     background: path.join(__dirname, "src/background.ts"),
     "hide-target": path.join(__dirname, "src/hide-target.ts"),
     options: path.join(__dirname, "src/options/index.tsx"),
+    popup: path.join(__dirname, "src/popup/index.tsx"),
   },
   output: {
     path: path.join(__dirname, "dist/js"),
