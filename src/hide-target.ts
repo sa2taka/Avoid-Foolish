@@ -3,9 +3,7 @@ import { Config, ConfigKey } from "./hide-target-config";
 
 const HIDE_TARGET_CLASS_NAME = "avoid-foolish__hide-target";
 
-const completed: number[] = [];
-
-const inertAttribute = document.createAttribute("inert");
+let completed: number[] = [];
 
 const hideTarget = (configList: Config[]): boolean => {
   configList.forEach((config, i) => {
@@ -14,13 +12,14 @@ const hideTarget = (configList: Config[]): boolean => {
     }
     const targets = window.document.querySelectorAll(config.targetCssSelector);
     targets.forEach((target) => {
+      const inertAttribute = document.createAttribute("inert");
       if (target.attributes.getNamedItem("inert") !== null && target.classList.contains(HIDE_TARGET_CLASS_NAME)) {
         return;
       }
 
       target.attributes.setNamedItem(inertAttribute);
       target.classList.add(HIDE_TARGET_CLASS_NAME);
-      console.log("hide", target);
+      console.log("[avoid-foolish]hide", target);
     });
     if (targets.length !== 0 && !config.repeat) {
       completed.push(i);
@@ -30,13 +29,17 @@ const hideTarget = (configList: Config[]): boolean => {
   return configList.length === completed.length;
 };
 
-window.addEventListener("load", () => {
+const load = () => {
+  completed = [];
   fetchConfigList().then((configList) => {
     const currentConfig = configList.filter(({ url, disable }) => location.href.match(url) && !disable);
-    console.log(configList);
     if (currentConfig.length === 0) {
       return;
     }
+    console.log("[avoid-foolish] avoid-foolish is enable.");
+    console.table(currentConfig);
+
+    hideTarget(currentConfig);
 
     const observer = new MutationObserver(() => {
       const allTargetCompleted = hideTarget(currentConfig);
@@ -50,4 +53,12 @@ window.addEventListener("load", () => {
       subtree: true,
     });
   });
+};
+
+window.addEventListener("load", load);
+
+chrome.runtime.onMessage.addListener(function (request) {
+  if (request.message === "TabUpdated") {
+    load();
+  }
 });
