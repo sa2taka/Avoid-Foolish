@@ -62,7 +62,7 @@ const ConfigItem: React.FC<{
           <TextField value={config.targetCssSelector} fullWidth variant="standard" onChange={onChangeTarget} />
         </Grid>
         <Grid item xs={2}>
-          <Switch value={!config.disable ?? true} onChange={toggleDisable} />
+          <Switch checked={!(config.disable ?? false)} onChange={toggleDisable} />
         </Grid>
         <Grid item xs={2}>
           <IconButton onClick={() => deleteConfig(config.id)}>
