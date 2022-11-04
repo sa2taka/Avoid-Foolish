@@ -8,11 +8,21 @@
     "128": "icon-128.png"
   },
 
-  "permissions": ["scripting", "activeTab", "storage"],
+  "permissions": ["scripting", "tabs", "storage"],
+
+  "host_permissions": ["<all_urls>"],
 
   "background": {
     "service_worker": "js/background.js"
   },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["js/hide-target.js"],
+      "css": ["css/hide-target.css"]
+    }
+  ],
 
   "options_ui": {
     "page": "options.html"
